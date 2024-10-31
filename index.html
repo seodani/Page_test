@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AES-256 File Decryption to Image</title>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+  <h1>AES-256 File Decryption</h1>
+
+  <div id="status">Searching for <strong>latestfile.encrypted</strong>...</div>
+  <input type="password" id="passwordInput" placeholder="Enter decryption key" style="display:none;" />
+  <button id="decryptButton" onclick="decryptFile()" style="display:none;">Decrypt and Show Image</button>
+
+  <img id="outputImage" style="display:none; max-width:100%; height:auto; margin-top: 10px;" />
+  <a id="downloadLink" style="display:none; margin-top: 10px;">Download Decrypted Image</a>
+
+  <script>
+    async function checkForEncryptedFile() {
+      try {
+        const response = await fetch('latestfile.encrypted');
+        if (!response.ok) throw new Error("File not found");
+
+        document.getElementById('status').innerText = "File found! Please enter your decryption key:";
+        document.getElementById('passwordInput').style.display = "inline";
+        document.getElementById('decryptButton').style.display = "inline";
+      } catch (error) {
+        document.getElementById('status').innerText = "No encrypted file found in this directory.";
+      }
+    }
+
+    async function decryptFile() {
+      const password = document.getElementById('passwordInput').value;
+      if (!password) {
+        alert("Please enter a decryption key.");
+        return;
+      }
+
+      try {
+        const response = await fetch('latestfile.encrypted');
+        const encryptedText = await response.text();
+
+        // Decrypt the file data using UTF-8 decoding
+        const decryptedData = CryptoJS.AES.decrypt(encryptedText, password).toString(CryptoJS.enc.Utf8);
+
+        if (!decryptedData) {
+          alert("Incorrect decryption key or corrupted file.");
+          return;
+        }
+
+        // Convert decrypted data to Blob
+        const byteCharacters = decryptedData;
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+        const img = document.getElementById('outputImage');
+        img.src = URL.createObjectURL(blob);
+        img.style.display = "block";
+
+        // Enable download link
+        const downloadLink = document.getElementById('downloadLink');
+        downloadLink.href = img.src;
+        downloadLink.download = "decrypted_image.jpg";
+        downloadLink.style.display = "block";
+        downloadLink.innerText = "Download Decrypted Image";
+
+        // Update status message
+        document.getElementById('status').innerText = "Image decrypted successfully!";
+        document.getElementById('passwordInput').style.display = "none";
+        document.getElementById('decryptButton').style.display = "none";
+      } catch (error) {
+        console.error("Decryption failed:", error);
+        alert("An error occurred during decryption.");
+      }
+    }
+
+    // Check for the encrypted file on load
+    checkForEncryptedFile();
+  </script>
+</body>
+</html>
