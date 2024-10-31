@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AES-256 File Decryption to Image</title>
+  <title>암호를 입력하고 파일을 마음껏 보세요.</title>
   <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
-  <h1>AES-256 File Decryption</h1>
+  <h1>암호를 입력하고 파일을 마음껏 보세요!!</h1>
 
-  <div id="status">Searching for <strong>latestfile.encrypted</strong>...</div>
+  <div id="status">콘텐츠 로드 중입니다...</div>
   <input type="password" id="passwordInput" placeholder="Enter decryption key" style="display:none;" />
-  <button id="decryptButton" onclick="decryptFile()" style="display:none;">Decrypt and Show Image</button>
+  <button id="decryptButton" onclick="decryptFile()" style="display:none;">암호 확인</button>
 
   <img id="outputImage" style="display:none; max-width:100%; height:auto; margin-top: 10px;" />
-  <a id="downloadLink" style="display:none; margin-top: 10px;">Download Decrypted Image</a>
+  <a id="downloadLink" style="display:none; margin-top: 10px;">이미지를 다운로드 합니다.</a>
 
   <script>
     async function checkForEncryptedFile() {
@@ -26,14 +26,14 @@
         document.getElementById('passwordInput').style.display = "inline";
         document.getElementById('decryptButton').style.display = "inline";
       } catch (error) {
-        document.getElementById('status').innerText = "No encrypted file found in this directory.";
+        document.getElementById('status').innerText = "오류 발생: 디코딩할 파일을 찾을 수 없습니다.";
       }
     }
 
     async function decryptFile() {
       const password = document.getElementById('passwordInput').value;
       if (!password) {
-        alert("Please enter a decryption key.");
+        alert("알림: 비밀번호를 입려ㅓㄱ하세요.");
         return;
       }
 
@@ -45,7 +45,7 @@
         const decryptedData = CryptoJS.AES.decrypt(encryptedText, password).toString(CryptoJS.enc.Utf8);
 
         if (!decryptedData) {
-          alert("Incorrect decryption key or corrupted file.");
+          alert("알림: 비밀번호가 틀렸습니다. 다시 시도하세요.");
           return;
         }
 
@@ -74,13 +74,14 @@
         document.getElementById('passwordInput').style.display = "none";
         document.getElementById('decryptButton').style.display = "none";
       } catch (error) {
-        console.error("Decryption failed:", error);
-        alert("An error occurred during decryption.");
+        console.error("예외사항 오류가 발생하였습니다:", error);
+        alert("알 수 없는 오류가 발생하였습니다.");
       }
     }
 
     // Check for the encrypted file on load
     checkForEncryptedFile();
+    // v2 seodani.
   </script>
 </body>
 </html>
