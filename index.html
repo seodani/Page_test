@@ -14,7 +14,7 @@
   <button id="decryptButton" onclick="decryptFile()" style="display:none;">암호 확인</button>
 
   <img id="outputImage" style="display:none; max-width:100%; height:auto; margin-top: 10px;" />
-  <a id="downloadLink" style="display:none; margin-top: 10px;">이미지를 다운로드 합니다.</a>
+  <a id="downloadLink" style="display:none; margin-top: 10px;">JS 는 웹게발의 기본입니다... JS 는 웹게발의 기본입니다... JS 는 웹게발의 기본입니다... JS 는 웹게발의 기본입니다... JS 는 웹게발의 기본입니다... JS 는 웹게발의 기본입니다...</a>
 
   <script>
     async function checkForEncryptedFile() {
@@ -22,7 +22,7 @@
         const response = await fetch('latestfile.encrypted');
         if (!response.ok) throw new Error("File not found");
 
-        document.getElementById('status').innerText = "File found! Please enter your decryption key:";
+        document.getElementById('status').innerText = "파일을 찾았습니다! 암호를 입력하세요.";
         document.getElementById('passwordInput').style.display = "inline";
         document.getElementById('decryptButton').style.display = "inline";
       } catch (error) {
@@ -33,7 +33,7 @@
     async function decryptFile() {
       const password = document.getElementById('passwordInput').value;
       if (!password) {
-        alert("알림: 비밀번호를 입려ㅓㄱ하세요.");
+        alert("알림: 비밀번호를 입력하세요.");
         return;
       }
 
@@ -67,7 +67,7 @@
         downloadLink.href = img.src;
         downloadLink.download = "decrypted_image.jpg";
         downloadLink.style.display = "block";
-        downloadLink.innerText = "Download Decrypted Image";
+        downloadLink.innerText = "이미지를 다운로드 합니다.";
 
         // Update status message
         document.getElementById('status').innerText = "Image decrypted successfully!";
@@ -75,13 +75,13 @@
         document.getElementById('decryptButton').style.display = "none";
       } catch (error) {
         console.error("예외사항 오류가 발생하였습니다:", error);
-        alert("알 수 없는 오류가 발생하였습니다.");
+        alert("알림: 비밀번호가 틀렸습니다. 다시 시도하세요.");
       }
     }
 
     // Check for the encrypted file on load
     checkForEncryptedFile();
-    // v2 seodani.
+    // v2.1 seodani.
   </script>
 </body>
 </html>
