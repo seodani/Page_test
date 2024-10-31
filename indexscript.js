@@ -46,7 +46,7 @@ async function checkForEncryptedFile() {
         // Enable download link
         const downloadLink = document.getElementById('downloadLink');
         downloadLink.href = img.src;
-        downloadLink.download = "decrypted_image.jpg";
+        downloadLink.download = "decrypted.mp4";
         downloadLink.style.display = "block";
         downloadLink.innerText = "이미지를 다운로드 합니다.";
 
